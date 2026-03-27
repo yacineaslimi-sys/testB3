@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concours National d'Admission — AI2 Bachelor 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root {
+  --bg: #070b14;
+  --bg2: #0d1426;
+  --card: #111827;
+  --card2: #162035;
+  --gold: #c9a84c;
+  --gold-l: #e8c96d;
+  --gold-dim: rgba(201,168,76,0.12);
+  --blue: #4a9eff;
+  --blue-dim: rgba(74,158,255,0.1);
+  --violet: #a78bfa;
+  --green: #34d399;
+  --red: #f87171;
+  --amber: #fbbf24;
+  --t1: #e8e4d9;
+  --t2: #9ca3af;
+  --t3: #6b7280;
+  --border: rgba(201,168,76,0.18);
+  --border2: rgba(255,255,255,0.06);
+  --r: 12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--t1);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 10%, rgba(201,168,76,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 90% 90%, rgba(74,158,255,0.05) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* ─── SCREEN SYSTEM ─── */
+.screen{display:none;position:relative;z-index:1;}
+.screen.active{display:block;animation:fadeSlideIn .5s ease;}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ─── SHARED ─── */
+.gold-text{
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+}
+.badge-gold{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 28px;border-radius:var(--r);font-family:'Outfit',sans-serif;
+  font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#b8962e,var(--gold));color:#070b14;
+  box-shadow:0 4px 20px rgba(201,168,76,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,0.4);}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--border2);}
+.btn-ghost:hover{background:var(--card);color:var(--t1);border-color:var(--border);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+input,select{
+  width:100%;padding:12px 16px;border-radius:var(--r);
+  background:var(--card2);border:1px solid var(--border2);
+  color:var(--t1);font-family:'Outfit',sans-serif;font-size:.95rem;
+  transition:border-color .2s;outline:none;
+}
+input:focus,select:focus{border-color:var(--gold);}
+input::placeholder{color:var(--t3);}
+select option{background:var(--card);}
+label{display:block;font-size:.8rem;font-weight:600;color:var(--t2);margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+/* ─── LANDING ─── */
+.landing-wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+.landing-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 0 40px;border-bottom:1px solid var(--border2);margin-bottom:50px;
+}
+.logo-mark{
+  display:flex;align-items:center;gap:12px;
+}
+.logo-hex{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,var(--gold),#b8962e);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:1.1rem;color:#070b14;
+}
+.logo-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:.05em;}
+.landing-year{font-size:.8rem;color:var(--t3);font-weight:500;}
+
+.landing-hero{text-align:center;margin-bottom:60px;}
+.landing-hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,5vw,3.4rem);font-weight:600;line-height:1.15;
+  margin-bottom:20px;
+}
+.landing-hero p{font-size:1.05rem;color:var(--t2);line-height:1.7;max-width:580px;margin:0 auto 28px;}
+.hero-stats{
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  flex-wrap:wrap;margin-top:36px;
+}
+.hero-stat{text-align:center;}
+.hero-stat .val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;}
+.hero-stat .lbl{font-size:.75rem;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+.info-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:36px;
+  margin-bottom:32px;
+}
+.info-card h2{
+  font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:8px;
+}
+.info-card p{color:var(--t2);font-size:.9rem;line-height:1.6;margin-bottom:24px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:0;}
+.form-group.full{grid-column:1/-1;}
+
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px;}
+.rule-item{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:16px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.rule-icon{font-size:1.3rem;flex-shrink:0;}
+.rule-text strong{display:block;font-size:.85rem;font-weight:600;margin-bottom:2px;}
+.rule-text span{font-size:.78rem;color:var(--t3);}
+
+.sections-preview{display:flex;flex-direction:column;gap:10px;margin-top:24px;}
+.section-preview-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;
+}
+.section-preview-left{display:flex;align-items:center;gap:12px;}
+.section-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.section-preview-name{font-size:.9rem;font-weight:500;}
+.section-preview-meta{font-size:.8rem;color:var(--t3);}
+.section-preview-pts{font-size:.8rem;color:var(--gold);font-weight:600;}
+
+.start-area{text-align:center;padding:16px 0;}
+.start-area p{font-size:.82rem;color:var(--t3);margin-top:12px;}
+
+/* ─── TEST SCREEN ─── */
+.test-header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,11,20,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border2);
+  padding:0 24px;
+}
+.test-header-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;gap:16px;
+}
+.test-logo{
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.test-logo .logo-hex{width:32px;height:32px;font-size:.85rem;}
+.test-logo .logo-name{font-size:1.1rem;}
+
+.global-progress{flex:1;max-width:300px;}
+.gp-top{display:flex;justify-content:space-between;font-size:.72rem;color:var(--t3);margin-bottom:5px;}
+.gp-bar{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;}
+.gp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--blue));border-radius:2px;transition:width .4s;}
+
+.timer-block{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border2);border-radius:8px;
+  padding:8px 14px;flex-shrink:0;
+}
+.timer-icon{font-size:.9rem;}
+.timer-value{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.04em;}
+.timer-block.danger{border-color:rgba(248,113,113,0.4);background:rgba(248,113,113,0.08);}
+.timer-block.danger .timer-value{color:var(--red);animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ─── SECTION TABS ─── */
+.section-tabs-wrap{background:var(--bg2);border-bottom:1px solid var(--border2);}
+.section-tabs{
+  max-width:1100px;margin:0 auto;
+  display:flex;overflow-x:auto;padding:0 24px;
+  scrollbar-width:none;
+}
+.section-tabs::-webkit-scrollbar{display:none;}
+.sec-tab{
+  display:flex;align-items:center;gap:8px;
+  padding:14px 18px;font-size:.82rem;font-weight:600;
+  color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all .2s;flex-shrink:0;
+}
+.sec-tab:hover{color:var(--t1);}
+.sec-tab.active{color:var(--t1);border-bottom-color:var(--gold);}
+.sec-tab.done{color:var(--gold);}
+.sec-tab-num{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--bg);font-size:.7rem;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border2);
+}
+.sec-tab.active .sec-tab-num{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.sec-tab.done .sec-tab-num{background:rgba(52,211,153,0.15);border-color:var(--green);color:var(--green);}
+
+/* ─── QUESTION AREA ─── */
+.test-body{max-width:1100px;margin:0 auto;padding:32px 24px 120px;display:grid;grid-template-columns:1fr 280px;gap:32px;}
+@media(max-width:800px){.test-body{grid-template-columns:1fr;}}
+
+.question-panel{min-width:0;}
+.q-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;
+}
+.q-breadcrumb{font-size:.8rem;color:var(--t3);}
+.q-counter{
+  font-size:.82rem;color:var(--t2);
+  background:var(--card);padding:4px 12px;border-radius:20px;border:1px solid var(--border2);
+}
+.q-section-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  padding:4px 12px;border-radius:20px;margin-bottom:16px;
+}
+
+.q-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:16px;
+  padding:32px;margin-bottom:20px;
+  transition:border-color .3s;
+}
+.q-card:hover{border-color:var(--border);}
+.q-number{
+  font-size:.78rem;color:var(--t3);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:12px;font-weight:600;
+}
+.q-text{
+  font-size:1.05rem;line-height:1.7;margin-bottom:24px;
+  font-weight:400;
+}
+.q-text code{
+  background:var(--bg2);padding:2px 8px;border-radius:4px;
+  font-family:'Courier New',monospace;font-size:.85em;color:var(--blue);
+  border:1px solid var(--border2);
+}
+.q-code-block{
+  background:var(--bg);border:1px solid var(--border2);border-radius:8px;
+  padding:16px;margin:12px 0 20px;font-family:'Courier New',monospace;
+  font-size:.85rem;color:#a5f3fc;line-height:1.6;white-space:pre-wrap;
+}
+
+.options{display:flex;flex-direction:column;gap:10px;}
+.option{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--bg2);border:2px solid var(--border2);border-radius:10px;
+  padding:14px 16px;cursor:pointer;transition:all .2s;
+}
+.option:hover{background:var(--card2);border-color:rgba(201,168,76,0.3);}
+.option.selected{
+  background:var(--gold-dim);border-color:var(--gold);
+}
+.option.correct{background:rgba(52,211,153,0.1);border-color:var(--green)!important;}
+.option.wrong{background:rgba(248,113,113,0.1);border-color:var(--red)!important;}
+.opt-key{
+  width:26px;height:26px;border-radius:6px;flex-shrink:0;
+  border:1.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;color:var(--t3);margin-top:1px;
+  transition:all .2s;
+}
+.option:hover .opt-key{border-color:var(--gold);color:var(--gold);}
+.option.selected .opt-key{background:var(--gold);border-color:var(--gold);color:#070b14;}
+.opt-text{font-size:.92rem;line-height:1.5;flex:1;}
+.opt-text code{
+  background:var(--bg);padding:1px 6px;border-radius:3px;
+  font-family:'Courier New',monospace;font-size:.82em;color:var(--blue);
+}
+
+/* ─── BOTTOM NAV ─── */
+.test-footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(7,11,20,0.95);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border2);
+  padding:12px 24px;
+}
+.test-footer-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.nav-left,.nav-right{display:flex;gap:8px;}
+.q-answered-info{font-size:.82rem;color:var(--t3);}
+.q-answered-info strong{color:var(--gold);}
+
+/* ─── SIDEBAR ─── */
+.sidebar{position:sticky;top:92px;height:fit-content;}
+.sidebar-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:16px;
+}
+.sidebar-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);font-weight:600;margin-bottom:14px;}
+.q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.q-dot{
+  aspect-ratio:1;border-radius:5px;border:1px solid var(--border2);
+  background:var(--bg2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--t3);transition:all .15s;
+}
+.q-dot:hover{border-color:var(--gold);color:var(--gold);}
+.q-dot.answered{background:var(--gold-dim);border-color:rgba(201,168,76,0.4);color:var(--gold);}
+.q-dot.current{border-color:var(--gold);background:var(--gold-dim);outline:2px solid var(--gold);outline-offset:1px;}
+
+/* ─── REVIEW MODAL ─── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);
+  z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.hidden{display:none;}
+.modal{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:36px;max-width:480px;width:100%;
+  animation:fadeSlideIn .3s ease;
+}
+.modal h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:8px;}
+.modal p{color:var(--t2);font-size:.9rem;line-height:1.6;margin-bottom:24px;}
+.modal-unanswered{
+  background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);
+  border-radius:8px;padding:14px 16px;margin-bottom:24px;font-size:.88rem;color:var(--amber);
+}
+.modal-actions{display:flex;gap:10px;}
+
+/* ─── RESULTS SCREEN ─── */
+.results-wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px;}
+.results-header{text-align:center;padding:48px 0 36px;border-bottom:1px solid var(--border2);margin-bottom:40px;}
+.results-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:600;margin-bottom:8px;}
+.results-header p{color:var(--t2);}
+
+.score-hero{text-align:center;margin-bottom:48px;}
+.score-circle-wrap{position:relative;width:180px;height:180px;margin:0 auto 24px;}
+.score-svg{width:100%;height:100%;}
+.score-bg-circle{fill:none;stroke:var(--card2);stroke-width:8;}
+.score-arc{
+  fill:none;stroke-width:8;stroke-linecap:round;
+  transform:rotate(-90deg);transform-origin:50% 50%;
+  transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);
+}
+.score-center{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.score-pct{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;line-height:1;}
+.score-raw{font-size:.8rem;color:var(--t3);margin-top:4px;}
+.score-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;margin-bottom:6px;}
+.score-info{font-size:.9rem;color:var(--t2);}
+
+.eligibility-card{
+  border-radius:16px;padding:28px 32px;margin-bottom:36px;
+  display:flex;align-items:flex-start;gap:20px;
+}
+.eligibility-card.admitted{background:rgba(52,211,153,0.08);border:2px solid rgba(52,211,153,0.4);}
+.eligibility-card.waitlist{background:rgba(251,191,36,0.08);border:2px solid rgba(251,191,36,0.3);}
+.eligibility-card.rejected{background:rgba(248,113,113,0.08);border:2px solid rgba(248,113,113,0.3);}
+.elig-icon{font-size:2.2rem;flex-shrink:0;}
+.elig-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;margin-bottom:6px;}
+.elig-desc{font-size:.9rem;color:var(--t2);line-height:1.6;}
+.admitted .elig-title{color:var(--green);}
+.waitlist .elig-title{color:var(--amber);}
+.rejected .elig-title{color:var(--red);}
+
+.section-breakdown{margin-bottom:36px;}
+.breakdown-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:20px;
+}
+.breakdown-item{
+  display:flex;align-items:center;gap:14px;margin-bottom:14px;
+}
+.breakdown-name{font-size:.85rem;font-weight:500;width:180px;flex-shrink:0;}
+.breakdown-bar-wrap{flex:1;height:8px;background:var(--bg2);border-radius:4px;overflow:hidden;}
+.breakdown-bar{height:100%;border-radius:4px;transition:width 1s ease .3s;}
+.breakdown-score{font-size:.85rem;font-weight:700;width:50px;text-align:right;flex-shrink:0;}
+
+.results-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+/* ─── LOADING ─── */
+.loading-screen{
+  position:fixed;inset:0;background:var(--bg);z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+}
+.loading-screen.hidden{display:none;}
+.spinner{
+  width:48px;height:48px;border:3px solid var(--border2);
+  border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:1rem;color:var(--t2);}
+
+/* ─── ERROR/SUCCESS TOAST ─── */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:12px 20px;font-size:.88rem;z-index:999;
+  animation:fadeSlideIn .3s ease;transition:opacity .3s;
+}
+.toast.hidden{opacity:0;pointer-events:none;}
+.toast.success{border-color:rgba(52,211,153,0.4);color:var(--green);}
+.toast.error{border-color:rgba(248,113,113,0.4);color:var(--red);}
+
+/* ─── MASTER SELECTOR ─── */
+.master-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:580px){.master-selector{grid-template-columns:1fr;}}
+.master-card{
+  border:2px solid var(--border2);border-radius:12px;padding:16px 18px;cursor:pointer;
+  background:var(--bg2);transition:all .2s;display:flex;align-items:flex-start;gap:12px;
+}
+.master-card:hover{border-color:rgba(201,168,76,0.4);background:var(--card2);}
+.master-card.selected{border-color:var(--gold);background:var(--gold-dim);}
+.master-card-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px;}
+.master-card-title{font-weight:700;font-size:.88rem;margin-bottom:3px;line-height:1.3;}
+.master-card-sub{font-size:.73rem;color:var(--t3);line-height:1.4;}
+.master-card.selected .master-card-title{color:var(--gold);}
+.master-error{display:none;color:var(--red);font-size:.8rem;margin-top:8px;}
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr;}
+  .test-header-inner{flex-wrap:wrap;height:auto;padding:10px 0;}
+  .global-progress{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  LOADING SCREEN                                    -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="loading-screen hidden" id="loadingScreen">
+  <div class="logo-hex" style="width:52px;height:52px;font-size:1.2rem;">AI2</div>
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Envoi en cours…</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  SCREEN 1: LANDING                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-wrap">
+
+    <div class="landing-top">
+      <div class="logo-mark">
+        <div class="logo-hex">AI2</div>
+        <span class="logo-name gold-text">Applied Institute of AI</span>
+      </div>
+      <span class="landing-year">Session 2025–2026</span>
+    </div>
+
+    <div class="landing-hero">
+      <div class="badge badge-gold" style="margin-bottom:20px;">🎓 Concours National d'Admission</div>
+      <h1>
+        <span class="gold-text">Concours d'Admission</span><br>
+        <span id="heroMasterTitle">Bachelor 3 — AI2</span>
+      </h1>
+      <p>Évaluation des connaissances fondamentales en Python, statistiques, culture de l’intelligence artificielle, SQL, préparation de données et visualisation pour une admission en Bachelor 3 Data Science & IA.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="val gold-text">40</div><div class="lbl">Questions</div></div>
+        <div class="hero-stat" style="width:1px;height:40px;background:var(--border2);"></div>
+        <div class="hero-stat"><div class="val gold-text">5</div><div class="lbl">Sections</div></div>
+        <div class="hero-stat" style="width:1px;height:40px;background:var(--border2);"></div>
+        <div class="hero-stat"><div class="val gold-text">1h30</div><div class="lbl">Durée</div></div>
+        <div class="hero-stat" style="width:1px;height:40px;background:var(--border2);"></div>
+        <div class="hero-stat"><div class="val gold-text">40</div><div class="lbl">Points</div></div>
+      </div>
+    </div>
+
+    <!-- Master Selection -->
+    <div class="info-card">
+      <h2>Choisissez votre parcours Bachelor 3 *</h2>
+      <p>Sélectionnez le parcours auquel vous souhaitez candidater. Le test est commun aux admissions Bachelor 3 orientées Data Science & IA.</p>
+      <div class="master-selector" id="masterSelector">
+        <div class="master-card" onclick="selectMaster('Bachelor 3 Data Science & IA', this)">
+          <div class="master-card-icon">🤖</div>
+          <div><div class="master-card-title">Bachelor 3 Data Science & IA</div><div class="master-card-sub">Python, statistiques, machine learning, culture IA</div></div>
+        </div>
+        <div class="master-card" onclick="selectMaster('Bachelor 3 Data Analyst', this)">
+          <div class="master-card-icon">📊</div>
+          <div><div class="master-card-title">Bachelor 3 Data Analyst</div><div class="master-card-sub">Analyse de données, visualisation, SQL, reporting</div></div>
+        </div>
+        <div class="master-card" onclick="selectMaster('Bachelor 3 Business Data', this)">
+          <div class="master-card-icon">💼</div>
+          <div><div class="master-card-title">Bachelor 3 Business Data</div><div class="master-card-sub">Décisionnel, culture data, pilotage et outils d’analyse</div></div>
+        </div>
+        <div class="master-card" onclick="selectMaster('Bachelor 3 IA Appliquée', this)">
+          <div class="master-card-icon">⚙️</div>
+          <div><div class="master-card-title">Bachelor 3 IA Appliquée</div><div class="master-card-sub">Bases du machine learning, automatisation et usages IA</div></div>
+        </div>
+      </div>
+      <div class="master-error" id="masterError">⚠️ Veuillez sélectionner un parcours Bachelor 3 avant de continuer.</div>
+    </div>
+
+    <!-- Candidate Info Form -->
+    <div class="info-card">
+      <h2>Informations du Candidat</h2>
+      <p>Ces informations sont nécessaires pour identifier votre dossier. Assurez-vous que votre adresse email est valide.</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nom *</label>
+          <input type="text" id="f-nom" placeholder="Votre nom de famille" required>
+        </div>
+        <div class="form-group">
+          <label>Prénom *</label>
+          <input type="text" id="f-prenom" placeholder="Votre prénom" required>
+        </div>
+        <div class="form-group">
+          <label>Adresse Email *</label>
+          <input type="email" id="f-email" placeholder="votre@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="f-phone" placeholder="+33 6 xx xx xx xx">
+        </div>
+        <div class="form-group full">
+          <label>Lycée / Université / École d'origine *</label>
+          <input type="text" id="f-univ" placeholder="Ex: Lycée Jean Moulin, Université Paris Cité, école privée..." required>
+        </div>
+        <div class="form-group">
+          <label>Mention / Niveau actuel</label>
+          <select id="f-mention">
+            <option value="">-- Sélectionner --</option>
+            <option value="Très Bien">Très Bien (≥ 16/20)</option>
+            <option value="Bien">Bien (14–16/20)</option>
+            <option value="Assez Bien">Assez Bien (12–14/20)</option>
+            <option value="Passable">Passable (10–12/20)</option>
+            <option value="En cours">En cours d'obtention / sans mention</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Spécialité / Parcours actuel</label>
+          <input type="text" id="f-specialite" placeholder="Ex: NSI, Mathématiques, Informatique, Économie...">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sections Preview -->
+    <div class="info-card">
+      <h2>Contenu du Concours</h2>
+      <p>Le test couvre 5 domaines fondamentaux adaptés à une admission en Bachelor 3 Data Science & IA.</p>
+      <div class="sections-preview">
+        <div class="section-preview-item">
+          <div class="section-preview-left">
+            <div class="section-dot" style="background:#34d399;"></div>
+            <div>
+              <div class="section-preview-name">Python</div>
+              <div class="section-preview-meta">Syntaxe, structures, fonctions, pandas, logique de programmation</div>
+            </div>
+          </div>
+          <div class="section-preview-pts">10 questions</div>
+        </div>
+        <div class="section-preview-item">
+          <div class="section-preview-left">
+            <div class="section-dot" style="background:#c9a84c;"></div>
+            <div>
+              <div class="section-preview-name">Statistiques &amp; Probabilités</div>
+              <div class="section-preview-meta">Moyenne, médiane, dispersion, probabilités, visualisation</div>
+            </div>
+          </div>
+          <div class="section-preview-pts">10 questions</div>
+        </div>
+        <div class="section-preview-item">
+          <div class="section-preview-left">
+            <div class="section-dot" style="background:#4a9eff;"></div>
+            <div>
+              <div class="section-preview-name">Culture IA &amp; Machine Learning</div>
+              <div class="section-preview-meta">Concepts essentiels, supervision, surapprentissage, usages</div>
+            </div>
+          </div>
+          <div class="section-preview-pts">8 questions</div>
+        </div>
+        <div class="section-preview-item">
+          <div class="section-preview-left">
+            <div class="section-dot" style="background:#f87171;"></div>
+            <div>
+              <div class="section-preview-name">SQL &amp; Bases de Données</div>
+              <div class="section-preview-meta">SELECT, WHERE, COUNT, AVG, ORDER BY, JOIN</div>
+            </div>
+          </div>
+          <div class="section-preview-pts">6 questions</div>
+        </div>
+        <div class="section-preview-item">
+          <div class="section-preview-left">
+            <div class="section-dot" style="background:#a78bfa;"></div>
+            <div>
+              <div class="section-preview-name">Préparation des données &amp; Visualisation</div>
+              <div class="section-preview-meta">Nettoyage, valeurs manquantes, standardisation, graphiques</div>
+            </div>
+          </div>
+          <div class="section-preview-pts">6 questions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules -->
+    <div class="info-card">
+      <h2>Règles &amp; Consignes</h2>
+      <p>Lisez attentivement les consignes avant de commencer.</p>
+      <div class="rules-grid">
+        <div class="rule-item"><div class="rule-icon">⏱</div><div class="rule-text"><strong>Durée : 1h30</strong><span>Le test se soumet automatiquement à l'expiration des 90 minutes</span></div></div>
+        <div class="rule-item"><div class="rule-icon">✅</div><div class="rule-text"><strong>Une seule réponse</strong><span>Chaque question admet une unique bonne réponse</span></div></div>
+        <div class="rule-item"><div class="rule-icon">🔄</div><div class="rule-text"><strong>Révision libre</strong><span>Vous pouvez modifier vos réponses avant soumission</span></div></div>
+        <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Sans aide extérieure</strong><span>Aucun accès à Internet ou documentation</span></div></div>
+        <div class="rule-item"><div class="rule-icon">💾</div><div class="rule-text"><strong>Sauvegarde auto</strong><span>Vos réponses sont sauvegardées localement</span></div></div>
+        <div class="rule-item"><div class="rule-icon">📊</div><div class="rule-text"><strong>Résultat immédiat</strong><span>Votre score et décision s'affichent à la soumission</span></div></div>
+      </div>
+    </div>
+
+    <div class="start-area">
+      <button class="btn btn-primary" style="font-size:1rem;padding:16px 48px;" onclick="startTest()">
+        Commencer le Concours &rarr;
+      </button>
+      <p>En cliquant, vous acceptez les conditions de participation et certifiez l'exactitude des informations fournies.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  SCREEN 2: TEST                                    -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="screen-test" class="screen">
+
+  <!-- Header -->
+  <div class="test-header">
+    <div class="test-header-inner">
+      <div class="test-logo">
+        <div class="logo-hex">AI2</div>
+        <span class="logo-name gold-text">B3 DS&amp;IA</span>
+      </div>
+      <div class="global-progress">
+        <div class="gp-top">
+          <span>Progression</span>
+          <span id="progressText">0 / 40</span>
+        </div>
+        <div class="gp-bar"><div class="gp-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <div class="timer-block" id="timerBlock">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-value" id="timerDisplay">2:00:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Tabs -->
+  <div class="section-tabs-wrap">
+    <div class="section-tabs" id="sectionTabs"></div>
+  </div>
+
+  <!-- Body -->
+  <div class="test-body">
+    <div class="question-panel">
+      <div class="q-header">
+        <div class="q-breadcrumb" id="qBreadcrumb"></div>
+        <div class="q-counter" id="qCounter"></div>
+      </div>
+      <div id="questionsContainer"></div>
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">Navigation Rapide</div>
+        <div class="q-grid" id="qGrid"></div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sidebar-title">Légende</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--t2);">
+            <div style="width:22px;height:22px;border-radius:5px;background:var(--gold-dim);border:1px solid rgba(201,168,76,0.4);"></div>Répondu
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--t2);">
+            <div style="width:22px;height:22px;border-radius:5px;background:var(--bg2);border:1px solid var(--border2);"></div>Non répondu
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--t2);">
+            <div style="width:22px;height:22px;border-radius:5px;background:var(--gold-dim);border:2px solid var(--gold);outline:2px solid var(--gold);outline-offset:1px;"></div>Actuel
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Nav -->
+  <div class="test-footer">
+    <div class="test-footer-inner">
+      <div class="nav-left">
+        <button class="btn btn-ghost" id="btnPrev" onclick="navigate(-1)">← Précédent</button>
+      </div>
+      <div class="q-answered-info">
+        <strong id="answeredCount">0</strong> / 40 répondues
+      </div>
+      <div class="nav-right">
+        <button class="btn btn-ghost" id="btnNext" onclick="navigate(1)">Suivant →</button>
+        <button class="btn btn-primary" id="btnSubmit" onclick="showSubmitModal()" style="display:none;">Soumettre ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Modal -->
+<div class="modal-overlay hidden" id="submitModal">
+  <div class="modal">
+    <h2>Soumettre le Concours ?</h2>
+    <p>Cette action est <strong>irréversible</strong>. Vérifiez que vous avez répondu à toutes les questions avant de confirmer.</p>
+    <div class="modal-unanswered hidden" id="unansweredWarning"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">← Retour</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitTest()">Confirmer la soumission</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  SCREEN 3: RESULTS                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="screen-results" class="screen">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;">
+    <div style="max-width:560px;width:100%;text-align:center;">
+
+      <!-- Logo -->
+      <div class="logo-mark" style="justify-content:center;margin-bottom:40px;">
+        <div class="logo-hex">AI2</div>
+        <span class="logo-name gold-text">Applied Institute of AI</span>
+      </div>
+
+      <!-- Checkmark animé -->
+      <div style="width:100px;height:100px;margin:0 auto 32px;position:relative;">
+        <svg viewBox="0 0 100 100" style="width:100%;height:100%;">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="4"/>
+          <circle cx="50" cy="50" r="46" fill="none" stroke="var(--gold)" stroke-width="4"
+                  stroke-dasharray="289" stroke-dashoffset="289"
+                  style="transition:stroke-dashoffset 1s ease;transform:rotate(-90deg);transform-origin:50% 50%;"
+                  id="confirmCircle"/>
+          <path d="M28 52 L44 68 L72 36" fill="none" stroke="var(--gold)" stroke-width="5"
+                stroke-linecap="round" stroke-linejoin="round"
+                stroke-dasharray="60" stroke-dashoffset="60"
+                style="transition:stroke-dashoffset 0.5s ease 0.8s;"
+                id="confirmCheck"/>
+        </svg>
+      </div>
+
+      <!-- Message principal -->
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:600;margin-bottom:16px;line-height:1.2;">
+        Merci <span class="gold-text" id="confirmPrenom">—</span> !
+      </h1>
+
+      <p style="font-size:1.1rem;color:var(--t2);line-height:1.7;margin-bottom:12px;">
+        Votre test a bien été soumis.<br>
+        Notre équipe pédagogique analyse votre dossier.
+      </p>
+
+      <div style="display:inline-block;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:18px 28px;margin:20px 0 32px;">
+        <p style="font-size:1rem;color:var(--t1);line-height:1.6;margin:0;">
+          📬 Vous recevrez une réponse personnalisée<br>
+          <strong class="gold-text">sous 5 jours ouvrables</strong> à l'adresse indiquée.
+        </p>
+      </div>
+
+      <!-- Info master -->
+      <p style="font-size:.85rem;color:var(--t3);margin-bottom:40px;" id="confirmMaster">—</p>
+
+      <div style="padding-top:24px;border-top:1px solid var(--border2);">
+        <p style="font-size:.75rem;color:var(--t3);">
+          AI2 — Applied Institute of Artificial Intelligence<br>
+          Concours National d'Admission · Session 2025–2026
+        </p>
+      </div>
+
+    </div>
+  </div>
+  <!-- Éléments cachés nécessaires pour le JS interne (non visibles) -->
+  <div style="display:none">
+    <div id="eligCard"><div id="eligIcon"></div><div><div id="eligTitle"></div><div id="eligDesc"></div></div></div>
+    <div id="resultName"></div><div id="resultInfo"></div><div id="resultSubtitle"></div>
+    <div id="resultPct"></div><div id="resultRaw"></div><div id="scoreArc"></div>
+    <div id="breakdownItems"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════
+   ⚙️  CONFIGURATION — À REMPLIR
+   ══════════════════════════════════════════════════ */
+// ── SUPABASE ──
+const SUPABASE_URL = "https://lxtfzbkiwfbkextaqzcn.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_gDgZRrnOpwbNR7skcKUXpg_ery7cZ0J";
+const TABLE_NAME = "candidates";
+
+// ── EMAILJS ── (remplissez après avoir créé votre compte EmailJS)
+const EMAILJS_PUBLIC_KEY  = "YLbR4PjyWv9DN2Tm2";
+const EMAILJS_SERVICE_ID  = "service_nzzmdcb";
+const EMAILJS_TEMPLATE_ID = "template_synittv";  // mail à vous
+const EMAILJS_CANDIDATE_TEMPLATE_ID = "VOTRE_TEMPLATE_CANDIDAT"; // ← mail au candidat (optionnel)
+const NOTIFY_EMAIL        = "contact@ai2-education.com";
+/* ══════════════════════════════════════════════════ */
+
+// Init EmailJS
+if(EMAILJS_PUBLIC_KEY !== "VOTRE_PUBLIC_KEY"){
+  emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+}
+
+/* ─── SECTIONS ─── */
+const SECTIONS = [
+  {id:0,name:"Python",short:"Python",color:"#34d399",count:10},
+  {id:1,name:"Statistiques & Probabilités",short:"Stats",color:"#c9a84c",count:10},
+  {id:2,name:"Culture IA & Machine Learning",short:"IA",color:"#4a9eff",count:8},
+  {id:3,name:"SQL & Bases de Données",short:"SQL",color:"#f87171",count:6},
+  {id:4,name:"Préparation des données & Visualisation",short:"Data",color:"#a78bfa",count:6},
+];
+
+/* ─── QUESTIONS ─── */
+const QUESTIONS = [
+  // ── SECTION 0 : PYTHON ──
+  {id:0,s:0,text:"En Python, quel type de donnée est <code>[1, 2, 3]</code> ?",opts:["tuple","list","dict","set"],correct:1},
+  {id:1,s:0,text:"Quel mot-clé permet de définir une fonction en Python ?",opts:["func","define","def","lambda"],correct:2},
+  {id:2,s:0,text:"Que retourne <code>len('data')</code> ?",opts:["3","4","5","Erreur"],correct:1},
+  {id:3,s:0,text:"Quel est le résultat de <code>3 * 'AI'</code> ?",opts:["'AIAI'","'AIAIAI'","6","Erreur"],correct:1},
+  {id:4,s:0,text:"Quelle structure stocke des paires clé-valeur ?",opts:["list","tuple","dict","int"],correct:2},
+  {id:5,s:0,text:"Quelle boucle parcourt le plus naturellement les éléments d'une liste ?",opts:["for","switch","case","goto"],correct:0},
+  {id:6,s:0,text:"Quel est le résultat de <code>5 // 2</code> en Python ?",opts:["2","2.5","3","Erreur"],correct:0},
+  {id:7,s:0,text:"Quel module est le plus utilisé pour manipuler des tableaux numériques en Python ?",opts:["numpy","flask","tkinter","requests"],correct:0},
+  {id:8,s:0,text:"Quelle instruction permet d'importer pandas avec l'alias habituel ?",opts:["import pandas as np","import pandas as pd","import pd as pandas","include pandas as pd"],correct:1},
+  {id:9,s:0,text:"Dans pandas, quelle méthode affiche les 5 premières lignes d'un DataFrame ?",opts:["df.start()","df.first()","df.head()","df.top()"],correct:2},
+
+  // ── SECTION 1 : STATISTIQUES & PROBABILITÉS ──
+  {id:10,s:1,text:"La moyenne de la série 2, 4, 6, 8 vaut :",opts:["4","5","6","7"],correct:1},
+  {id:11,s:1,text:"La médiane de la série 1, 3, 5, 7, 9 vaut :",opts:["3","4","5","6"],correct:2},
+  {id:12,s:1,text:"Laquelle de ces mesures décrit la dispersion des données ?",opts:["La moyenne","La variance","La médiane","Le mode"],correct:1},
+  {id:13,s:1,text:"Une probabilité est toujours comprise entre :",opts:["-1 et 1","0 et 1","0 et 100","-100 et 100"],correct:1},
+  {id:14,s:1,text:"Si deux événements A et B sont indépendants, alors :",opts:["P(A ∩ B) = P(A) + P(B)","P(A ∩ B) = P(A) × P(B)","P(A|B) = 0","P(B|A) = 1"],correct:1},
+  {id:15,s:1,text:"Le mode correspond :",opts:["À la valeur la plus fréquente","À la plus grande valeur","À la moyenne","À l'écart-type"],correct:0},
+  {id:16,s:1,text:"Quel graphique est le plus adapté pour visualiser une distribution ?",opts:["Histogramme","Camembert","Carte","Diagramme UML"],correct:0},
+  {id:17,s:1,text:"Si une variable suit une loi normale, sa courbe a généralement une forme :",opts:["Rectangulaire","En cloche","Triangulaire","Sans forme"],correct:1},
+  {id:18,s:1,text:"L'écart-type mesure principalement :",opts:["La tendance centrale","La dispersion autour de la moyenne","Le nombre de classes","Le pourcentage d'erreurs"],correct:1},
+  {id:19,s:1,text:"Si P(A)=0.5 et P(B)=0.2 avec A et B indépendants, alors P(A∩B) vaut :",opts:["0.7","0.1","0.3","0.25"],correct:1},
+
+  // ── SECTION 2 : CULTURE IA & MACHINE LEARNING ──
+  {id:20,s:2,text:"L'intelligence artificielle désigne principalement :",opts:["Uniquement les robots physiques","Des systèmes capables d'exécuter des tâches associées à l'intelligence humaine","Uniquement les réseaux sociaux","Les ordinateurs très rapides"],correct:1},
+  {id:21,s:2,text:"Le Machine Learning est :",opts:["Une branche de l'IA","Un langage de programmation","Une base de données","Un système d'exploitation"],correct:0},
+  {id:22,s:2,text:"En apprentissage supervisé, on entraîne un modèle à partir :",opts:["De données sans labels","De données avec labels","Uniquement d'images","Uniquement de textes"],correct:1},
+  {id:23,s:2,text:"Quel algorithme est souvent utilisé pour un problème de classification ?",opts:["Régression logistique","K-means","PCA","Apriori"],correct:0},
+  {id:24,s:2,text:"Le surapprentissage (overfitting) signifie que le modèle :",opts:["Apprend trop peu","Mémorise trop les données d'entraînement et généralise mal","Est toujours plus rapide","A moins de variables"],correct:1},
+  {id:25,s:2,text:"Quel indicateur est souvent utilisé pour évaluer une classification ?",opts:["Accuracy","MSE","RMSE","Variance"],correct:0},
+  {id:26,s:2,text:"Un modèle de clustering comme K-means sert à :",opts:["Prédire une valeur numérique","Regrouper des observations similaires","Écrire du code Python","Nettoyer une base SQL"],correct:1},
+  {id:27,s:2,text:"ChatGPT est principalement basé sur :",opts:["Un tableur Excel","Un modèle de langage","Un compilateur C","Un antivirus"],correct:1},
+
+  // ── SECTION 3 : SQL & BASES DE DONNÉES ──
+  {id:28,s:3,text:"Quelle requête SQL permet de sélectionner toutes les colonnes d'une table <code>etudiants</code> ?",opts:["GET * FROM etudiants","SELECT * FROM etudiants","SHOW ALL etudiants","READ etudiants"],correct:1},
+  {id:29,s:3,text:"Quelle clause permet de filtrer les lignes ?",opts:["ORDER BY","GROUP BY","WHERE","JOIN"],correct:2},
+  {id:30,s:3,text:"Quelle requête compte le nombre de lignes d'une table ?",opts:["SELECT SUM(*)","SELECT COUNT(*)","SELECT NUMBER(*)","SELECT LINES(*)"],correct:1},
+  {id:31,s:3,text:"Quelle clause permet de trier les résultats ?",opts:["SORT BY","ORDER BY","GROUP BY","FILTER BY"],correct:1},
+  {id:32,s:3,text:"Un <strong>INNER JOIN</strong> permet :",opts:["De supprimer une table","De relier deux tables selon une condition","D'ajouter une colonne","De renommer une base"],correct:1},
+  {id:33,s:3,text:"La requête <code>SELECT AVG(note) FROM examens</code> calcule :",opts:["La somme des notes","Le nombre de notes","La moyenne des notes","La note maximale"],correct:2},
+
+  // ── SECTION 4 : PRÉPARATION DES DONNÉES & VISUALISATION ──
+  {id:34,s:4,text:"Que signifie souvent “nettoyer les données” ?",opts:["Supprimer toutes les colonnes","Corriger ou traiter les valeurs manquantes, doublons et incohérences","Changer les couleurs du tableau","Compresser les fichiers"],correct:1},
+  {id:35,s:4,text:"Dans un projet data, une valeur manquante peut être :",opts:["Ignorée dans tous les cas","Supprimée ou imputée selon le contexte","Toujours remplacée par 0","Toujours remplacée par la médiane"],correct:1},
+  {id:36,s:4,text:"Quel outil Python est très utilisé pour la visualisation simple ?",opts:["matplotlib","numpy","os","sqlite3"],correct:0},
+  {id:37,s:4,text:"Pour comparer des catégories (ex: ventes par ville), quel graphique est souvent le plus adapté ?",opts:["Diagramme en barres","Histogramme","Nuage de points","Courbe ROC"],correct:0},
+  {id:38,s:4,text:"Standardiser une variable consiste généralement à :",opts:["La convertir en texte","La centrer et réduire","La supprimer","La dupliquer"],correct:1},
+  {id:39,s:4,text:"Dans un projet data, la première étape la plus logique est souvent :",opts:["Déployer le modèle en production","Comprendre le besoin et explorer les données","Créer un dashboard final","Choisir un GPU"],correct:1},
+];
+
+/* ─── STATE ─── */
+let state = {
+  currentQ: 0,
+  answers: new Array(40).fill(null),
+  startTime: null,
+  candidateInfo: {},
+  timerInterval: null,
+  secondsLeft: 5400,
+  selectedMaster: null,
+};
+
+/* ─── MASTER SELECTION ─── */
+function selectMaster(master, el){
+  state.selectedMaster = master;
+  document.querySelectorAll('.master-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('masterError').style.display='none';
+  // Update hero title dynamically
+  document.getElementById('heroMasterTitle').textContent = master;
+}
+
+/* ─── UTILITIES ─── */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type}`;
+  setTimeout(()=>t.classList.add('hidden'),3000);
+}
+
+function formatTime(s){
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;
+  return `${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+
+/* ─── VALIDATION & START ─── */
+function startTest(){
+  // Validate master selection
+  if(!state.selectedMaster){
+    document.getElementById('masterError').style.display='block';
+    document.getElementById('masterSelector').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const nom=document.getElementById('f-nom').value.trim();
+  const prenom=document.getElementById('f-prenom').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const univ=document.getElementById('f-univ').value.trim();
+  if(!nom||!prenom||!email||!univ){
+    showToast('Veuillez remplir tous les champs obligatoires (*)','error');return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showToast('Email invalide','error');return;
+  }
+  state.candidateInfo={nom,prenom,email,
+    phone:document.getElementById('f-phone').value.trim(),
+    universite:univ,
+    mention:document.getElementById('f-mention').value,
+    specialite:document.getElementById('f-specialite').value.trim(),
+    parcours:state.selectedMaster,
+    master:state.selectedMaster
+  };
+  state.startTime=Date.now();
+  const saved=localStorage.getItem('ai2_answers');
+  if(saved){
+    try{const a=JSON.parse(saved);if(Array.isArray(a)&&a.length===40)state.answers=a;}catch(e){}
+  }
+  showScreen('screen-test');
+  buildTestUI();
+  startTimer();
+}
+
+/* ─── TIMER ─── */
+function startTimer(){
+  const saved=localStorage.getItem('ai2_timer');
+  if(saved){const s=parseInt(saved);if(!isNaN(s)&&s>0&&s<=5400)state.secondsLeft=s;}
+  updateTimerDisplay();
+  state.timerInterval=setInterval(()=>{
+    state.secondsLeft--;
+    localStorage.setItem('ai2_timer',state.secondsLeft);
+    updateTimerDisplay();
+    if(state.secondsLeft<=0){clearInterval(state.timerInterval);submitTest(true);}
+  },1000);
+}
+
+function updateTimerDisplay(){
+  const el=document.getElementById('timerDisplay');
+  const block=document.getElementById('timerBlock');
+  if(!el)return;
+  el.textContent=formatTime(state.secondsLeft);
+  if(state.secondsLeft<=300)block.classList.add('danger');
+}
+
+/* ─── BUILD UI ─── */
+function buildTestUI(){
+  buildSectionTabs();
+  buildQGrid();
+  renderQuestion(0);
+}
+
+function buildSectionTabs(){
+  const wrap=document.getElementById('sectionTabs');
+  wrap.innerHTML='';
+  let qOffset=0;
+  SECTIONS.forEach(sec=>{
+    const tab=document.createElement('div');
+    tab.className='sec-tab';
+    tab.dataset.secid=sec.id;
+    tab.dataset.firstq=qOffset;
+    tab.innerHTML=`<div class="sec-tab-num" id="secNum${sec.id}">${sec.id+1}</div><span>${sec.short}</span>`;
+    tab.addEventListener('click',()=>navigateToSection(sec.id));
+    wrap.appendChild(tab);
+    qOffset+=sec.count;
+  });
+  updateSectionTabs();
+}
+
+function buildQGrid(){
+  const grid=document.getElementById('qGrid');
+  grid.innerHTML='';
+  QUESTIONS.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.className='q-dot';
+    d.dataset.qi=i;
+    d.textContent=i+1;
+    d.title=`Question ${i+1}`;
+    d.addEventListener('click',()=>renderQuestion(i));
+    grid.appendChild(d);
+  });
+  updateQGrid();
+}
+
+function updateQGrid(){
+  document.querySelectorAll('.q-dot').forEach((d,i)=>{
+    d.className='q-dot';
+    if(state.answers[i]!==null)d.classList.add('answered');
+    if(i===state.currentQ)d.classList.add('current');
+  });
+}
+
+function updateSectionTabs(){
+  let offset=0;
+  SECTIONS.forEach(sec=>{
+    const tab=document.querySelector(`.sec-tab[data-secid="${sec.id}"]`);
+    if(!tab)return;
+    tab.classList.remove('active','done');
+    const qStart=offset,qEnd=offset+sec.count-1;
+    const inSection=state.currentQ>=qStart&&state.currentQ<=qEnd;
+    const allDone=state.answers.slice(qStart,qStart+sec.count).every(a=>a!==null);
+    if(inSection)tab.classList.add('active');
+    else if(allDone)tab.classList.add('done');
+    offset+=sec.count;
+  });
+}
+
+function renderQuestion(index){
+  state.currentQ=index;
+  const q=QUESTIONS[index];
+  const sec=SECTIONS[q.s];
+  // breadcrumb
+  document.getElementById('qBreadcrumb').textContent=sec.name;
+  let secOffset=0;for(let i=0;i<q.s;i++)secOffset+=SECTIONS[i].count;
+  const qInSec=index-secOffset+1;
+  document.getElementById('qCounter').textContent=`Q${qInSec}/${sec.count} de la section`;
+  // render question card
+  const container=document.getElementById('questionsContainer');
+  container.innerHTML=`
+    <div class="q-section-label" style="background:${sec.color}20;color:${sec.color};border:1px solid ${sec.color}40;">
+      ${sec.name}
+    </div>
+    <div class="q-card">
+      <div class="q-number">Question ${index+1} sur 40</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options" id="optionsList"></div>
+    </div>`;
+  const optList=document.getElementById('optionsList');
+  q.opts.forEach((opt,oi)=>{
+    const div=document.createElement('div');
+    div.className='option'+(state.answers[index]===oi?' selected':'');
+    div.innerHTML=`<div class="opt-key">${String.fromCharCode(65+oi)}</div><div class="opt-text">${opt}</div>`;
+    div.addEventListener('click',()=>selectAnswer(index,oi));
+    optList.appendChild(div);
+  });
+  updateNavButtons();
+  updateQGrid();
+  updateSectionTabs();
+  updateProgress();
+}
+
+function selectAnswer(qIndex,optIndex){
+  state.answers[qIndex]=optIndex;
+  localStorage.setItem('ai2_answers',JSON.stringify(state.answers));
+  // re-render options highlight
+  document.querySelectorAll('.option').forEach((o,i)=>{
+    o.classList.toggle('selected',i===optIndex);
+  });
+  updateProgress();
+  updateQGrid();
+}
+
+function updateProgress(){
+  const answered=state.answers.filter(a=>a!==null).length;
+  document.getElementById('answeredCount').textContent=answered;
+  document.getElementById('progressText').textContent=`${answered} / 40`;
+  document.getElementById('progressFill').style.width=`${(answered/40)*100}%`;
+  const submitBtn=document.getElementById('btnSubmit');
+  const nextBtn=document.getElementById('btnNext');
+  if(answered===40){submitBtn.style.display='flex';nextBtn.style.display='none';}
+  else{submitBtn.style.display='none';nextBtn.style.display='flex';}
+}
+
+function updateNavButtons(){
+  document.getElementById('btnPrev').disabled=state.currentQ===0;
+  document.getElementById('btnNext').disabled=state.currentQ===QUESTIONS.length-1;
+}
+
+function navigate(dir){
+  const next=state.currentQ+dir;
+  if(next>=0&&next<QUESTIONS.length)renderQuestion(next);
+}
+
+function navigateToSection(secId){
+  let offset=0;
+  for(let i=0;i<secId;i++)offset+=SECTIONS[i].count;
+  renderQuestion(offset);
+}
+
+/* ─── SUBMIT MODAL ─── */
+function showSubmitModal(){
+  const unanswered=state.answers.reduce((acc,a,i)=>a===null?[...acc,i+1]:acc,[]);
+  const warn=document.getElementById('unansweredWarning');
+  if(unanswered.length>0){
+    warn.classList.remove('hidden');
+    warn.innerHTML=`⚠️ <strong>${unanswered.length} question(s) sans réponse :</strong> ${unanswered.join(', ')}`;
+  }else{
+    warn.classList.add('hidden');
+  }
+  document.getElementById('submitModal').classList.remove('hidden');
+}
+
+function closeModal(){
+  document.getElementById('submitModal').classList.add('hidden');
+}
+
+/* ─── SCORING ─── */
+function calculateScores(){
+  let bySection=SECTIONS.map(()=>({score:0,total:0}));
+  QUESTIONS.forEach((q,i)=>{
+    bySection[q.s].total++;
+    if(state.answers[i]===q.correct)bySection[q.s].score++;
+  });
+  const total=bySection.reduce((a,s)=>a+s.score,0);
+  const pct=Math.round((total/40)*100);
+  return{bySection,total,pct};
+}
+
+function getEligibility(pct){
+  const master=state.candidateInfo.master||'Bachelor 3';
+  if(pct>=70)return{
+    cls:'admitted',icon:'🎓',
+    title:'Admis(e)',
+    desc:`Félicitations ! Votre score de ${pct}% vous qualifie pour une admission en ${master} à l'AI2. Vous recevrez la suite du processus par email.`
+  };
+  if(pct>=50)return{
+    cls:'pending',icon:'📋',
+    title:'Admissible sous réserve d’entretien',
+    desc:`Votre score de ${pct}% vous place dans une zone intermédiaire. Votre dossier peut être étudié pour un entretien ou une admission conditionnelle en ${master}.`
+  };
+  return{
+    cls:'rejected',icon:'📌',
+    title:'Non admissible',
+    desc:`Votre score de ${pct}% est inférieur au seuil recommandé pour ${master}. Nous vous conseillons de renforcer vos bases puis de retenter votre chance.`
+  };
+}
+
+/* ─── SUBMIT ─── */
+async function submitTest(auto=false){
+  closeModal();
+  clearInterval(state.timerInterval);
+  const timeTaken=5400-state.secondsLeft;
+  const{bySection,total,pct}=calculateScores();
+  const elig=getEligibility(pct);
+  const dur=`${Math.floor(timeTaken/60)}min ${timeTaken%60}s`;
+  // Show loading
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  document.getElementById('loadingText').textContent='Enregistrement de votre résultat…';
+  // Build payload
+  const payload={
+    nom:state.candidateInfo.nom,
+    prenom:state.candidateInfo.prenom,
+    email:state.candidateInfo.email,
+    phone:state.candidateInfo.phone||null,
+    universite:state.candidateInfo.universite,
+    mention_niveau:state.candidateInfo.mention||null,
+    specialite:state.candidateInfo.specialite||null,
+    master:state.candidateInfo.master||null,
+    score_python:bySection[0].score,
+    score_stats:bySection[1].score,
+    score_ia:bySection[2].score,
+    score_sql:bySection[3].score,
+    score_data:bySection[4].score,
+    total_score:total,
+    max_score:40,
+    percentage:pct,
+    eligibility:elig.title,
+    answers:JSON.stringify(state.answers),
+    time_taken:timeTaken
+  };
+  // ── 1. Send to Supabase ──
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':`Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok)throw new Error(`Supabase ${res.status}`);
+  }catch(e){
+    console.warn('Supabase (non-blocking):',e.message);
+  }
+  // ── 2. Send email notification via EmailJS ──
+  if(EMAILJS_PUBLIC_KEY !== "VOTRE_PUBLIC_KEY"){
+    try{
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email:      NOTIFY_EMAIL,
+        candidate_name:`${state.candidateInfo.prenom} ${state.candidateInfo.nom}`,
+        candidate_email: state.candidateInfo.email,
+        candidate_phone: state.candidateInfo.phone||'—',
+        universite:    state.candidateInfo.universite,
+        master:        state.candidateInfo.master||'—',
+        mention_niveau:    state.candidateInfo.mention||'—',
+        score:         `${total}/40 (${pct}%)`,
+        decision:      elig.title,
+        score_python:  `${bySection[0].score}/10`,
+        score_stats:   `${bySection[1].score}/10`,
+        score_ia:      `${bySection[2].score}/8`,
+        score_sql:     `${bySection[3].score}/6`,
+        score_data:    `${bySection[4].score}/6`,
+        duree:         dur,
+        date_heure:    new Date().toLocaleString('fr-FR'),
+      });
+    }catch(e){
+      console.warn('EmailJS (non-blocking):',e.message);
+    }
+  }
+  // ── 3. Send results email to the candidate ──
+  if(EMAILJS_PUBLIC_KEY !== "VOTRE_PUBLIC_KEY" && EMAILJS_CANDIDATE_TEMPLATE_ID !== "VOTRE_TEMPLATE_CANDIDAT"){
+    try{
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CANDIDATE_TEMPLATE_ID, {
+        to_email:      state.candidateInfo.email,
+        candidate_name:`${state.candidateInfo.prenom} ${state.candidateInfo.nom}`,
+        master:        state.candidateInfo.master||'—',
+        universite:    state.candidateInfo.universite,
+        score:         `${total}/40 (${pct}%)`,
+        decision:      elig.title,
+        score_python:  `${bySection[0].score}/10`,
+        score_stats:   `${bySection[1].score}/10`,
+        score_ia:      `${bySection[2].score}/8`,
+        score_sql:     `${bySection[3].score}/6`,
+        score_data:    `${bySection[4].score}/6`,
+        duree:         dur,
+        date_heure:    new Date().toLocaleString('fr-FR'),
+      });
+    }catch(e){
+      console.warn('EmailJS candidat (non-blocking):',e.message);
+    }
+  }
+  // ── 4. Cleanup & show results ──
+  localStorage.removeItem('ai2_answers');
+  localStorage.removeItem('ai2_timer');
+  document.getElementById('loadingScreen').classList.add('hidden');
+  showResults({bySection,total,pct,elig,auto});
+}
+
+/* ─── SHOW RESULTS ─── */
+function showResults({bySection,total,pct,elig,auto}){
+  showScreen('screen-results');
+  const{nom,prenom,master}=state.candidateInfo;
+  // Afficher seulement le prénom et le master — AUCUN score visible
+  const el=document.getElementById('confirmPrenom');
+  if(el) el.textContent=prenom||nom||'';
+  const elM=document.getElementById('confirmMaster');
+  if(elM) elM.textContent=`Programme visé : ${master||'Bachelor 3 AI2'}`;
+  // Animer le cercle de confirmation
+  setTimeout(()=>{
+    const circle=document.getElementById('confirmCircle');
+    const check=document.getElementById('confirmCheck');
+    if(circle) circle.style.strokeDashoffset='0';
+    if(check) check.style.strokeDashoffset='0';
+  },200);
+  if(auto)showToast('⏱ Temps écoulé — test soumis automatiquement','error');
+}
+</script>
+</body>
+</html>
